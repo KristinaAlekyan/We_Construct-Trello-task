@@ -8,21 +8,6 @@ export const addList = title =>{
     };
 };
 
-export const sorter = (droppableIdStart, droppableIdEnd, droppableIndexStart, droppableIndexEnd, draggableId ) => {
-    return (dispatch) => {
-        dispatch({
-            type: CONSTANTS.DRAGG_HAPPENED,
-            payload: {
-                droppableIdStart,
-                droppableIdEnd,
-                droppableIndexStart, 
-                droppableIndexEnd,
-                draggableId,
-            }
-        });
-    };
-};
-
 export const editTitle = (listID, newTitle) => {
     return {
       type: CONSTANTS.EDIT_LIST_TITLE,

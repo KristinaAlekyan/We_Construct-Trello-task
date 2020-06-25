@@ -1,4 +1,5 @@
 import {CONSTANTS} from '../actions/index';
+import { cloneDeep } from 'lodash'
 
 let listID = 0;
 let cardID = 0;
@@ -20,10 +21,10 @@ const listsReducer = (state = initialState, action) =>{
             const newCard = {
                 text: action.payload.text,
                 id: cardID,
-            } 
+            }
             cardID +=1;
 
-        const newState=state.map(list =>{
+            const newState = state.map(list =>{
             if(list.id === action.payload.listID){
                 return{
                     ...list,
@@ -38,12 +39,12 @@ const listsReducer = (state = initialState, action) =>{
 
         case CONSTANTS.EDIT_LIST_TITLE: {
             const { listID, newTitle } = action.payload;
-      
+
             const list = state[listID];
             list.title = newTitle;
             return { ...state, [listID]: list };
         }
-      
+
         case CONSTANTS.DELETE_LIST: {
             const { listID } = action.payload;
             const newState = state;
@@ -53,42 +54,54 @@ const listsReducer = (state = initialState, action) =>{
 
 
 
-        case CONSTANTS.DRAG_HAPPENED:
-            const {
-              droppIdStart,
-              droppIdEnd,
-              droppIndexEnd,
-              droppIndexStart,   
+        case CONSTANTS.DRAGG_HAPPENED:
+            let {
+                draggableId,
+                droppableIdEnd,
+                droppableIdStart,
+                droppableIndexEnd,
+                droppableIndexStart
             } = action.payload;
+            let newState = cloneDeep(state);
 
-            if (droppIdStart === droppIdEnd) {
-              const list = state[droppIdStart];
-              const card = list.cards.splice(droppIndexStart, 1);
-              list.cards.splice(droppIndexEnd, 0, ...card);
-              return { ...state, [droppIdStart]: list };
+            droppableIdStart = Number(droppableIdStart);
+            droppableIdEnd = Number(droppableIdEnd);
+
+            if (droppableIdStart === droppableIdEnd) {
+                let list = {};
+                newState.map(item => {
+                    if (item.id === droppableIdStart) {
+                        list = item
+                    }
+                });
+                console.log('list', list);
+                const card = list.cards.splice(droppableIndexStart, 1);
+                list.cards.splice(droppableIndexEnd, 0, ...card);
+                return [ ...newState ];
             }
-      
-            
-            if (droppIdStart !== droppIdEnd) {
-              const listStart = state[droppIdStart];
-              const card = listStart.cards.splice(droppIndexStart, 1);
-              const listEnd = state[droppIdEnd];
-              listEnd.cards.splice(droppIndexEnd, 0, ...card);
-              return {
-                ...state,
-                [droppIdStart]: listStart,
-                [droppIdEnd]: listEnd
-              };
+
+            if (droppableIdStart !== droppableIdEnd) {
+                let listStart = {},
+                    listEnd = {};
+                newState.map(item => {
+                    if (item.id === droppableIdStart) {
+                        listStart = item
+                    }
+                    if (item.id === droppableIdEnd) {
+                        listEnd = item
+                    }
+                });
+                const card = listStart.cards.splice(droppableIndexStart, 1);
+                listEnd.cards.splice(droppableIndexEnd, 0, ...card);
+                return [...newState];
             }
             return state;
-      
-
         default:
             return state;
     }
 };
 
-export default listsReducer; 
+export default listsReducer;
 
 
 

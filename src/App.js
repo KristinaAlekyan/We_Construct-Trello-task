@@ -3,25 +3,28 @@ import List from './components/List';
 import {connect} from 'react-redux';
 import ActionBtn from './components/ActionBtn'
 import { DragDropContext } from 'react-beautiful-dnd';
-import {sorter} from './actions';
+import {CONSTANTS, sorter} from './actions';
 
-function App(props) {  
-  
+function App(props) {
+
   const {lists} = props;
   const onDragEnd = (result) => {
-    const { dest, source, draggableId, type } = result;;
-    if(!dest){
+    console.log('result', result);
+    const { destination, source, draggableId } = result;
+    if(!destination){
       return;
     }
-
     props.dispatch(
-      sorter(
-        source.droppableId,
-        dest.droppableId,
-        source.index,
-        dest.index,
-        draggableId,
-      )
+        {
+          type: CONSTANTS.DRAGG_HAPPENED,
+          payload: {
+            droppableIdStart: source.droppableId,
+            droppableIdEnd: destination.droppableId,
+            droppableIndexStart: source.index,
+            droppableIndexEnd: destination.index,
+            draggableId: draggableId,
+          }
+        }
     );
   };
 
@@ -38,16 +41,16 @@ function App(props) {
             <ActionBtn list/>
           </div>
         </div>
-      </div>   
+      </div>
       </DragDropContext>
-    </div> 
+    </div>
   )
 }
-const styles = {  
+const styles = {
   listsCont: {
-    display: "flex", 
-    flexDirection: "row", 
-  },  
+    display: "flex",
+    flexDirection: "row",
+  },
   actionBtnCon: {
     height: 30,
     width: 100,
@@ -55,10 +58,11 @@ const styles = {
 };
 
 const mapStateToProps= (state)=> {
-  return {
-    lists : state.lists
-  }
+  return{
+    lists : state.lists,
+    cards: state.cards,
 }
+};
 
 export default connect(mapStateToProps)(App);
 
