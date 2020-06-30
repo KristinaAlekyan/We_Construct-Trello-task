@@ -7,26 +7,3 @@ export const addList = title =>{
         payload: title  
     };
 };
-
-export const editTitle = (listID, newTitle) => {
-    return {
-      type: CONSTANTS.EDIT_LIST_TITLE,
-      payload: {
-        listID,
-        newTitle
-      }
-    };
-  };
-  
-  export const deleteList = listID => {
-    return (dispatch) => {
-      return dispatch({
-        type: CONSTANTS.DELETE_LIST,
-        payload: {
-          listID
-        }
-      });
-    };
-  };
-
-

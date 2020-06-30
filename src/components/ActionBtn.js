@@ -30,7 +30,6 @@ class ActionBtn extends React.Component{
 
     handleAddList = () =>{
         const {dispatch} = this.props;
-        console.log(this.props);
         const {text} = this.state;
         if (text) {
             this.setState({
@@ -119,5 +118,3 @@ class ActionBtn extends React.Component{
 
 
 export default connect()(ActionBtn);
-
-

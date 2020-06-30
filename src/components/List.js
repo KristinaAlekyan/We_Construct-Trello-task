@@ -18,7 +18,7 @@ const List = ({ title, cards, listID, index, dispatch }) =>{
                         </div>
                     </div>
                     {cards.map((c, index)=>(
-                        <Card1  key={c.id} index={index} text={c.text} id={c.id}/>
+                        <Card1  key={c.id} index={index} text={c.text} id={c.id} listID={listID} />
                     ))
                     }
                     <ActionBtn listID={listID}/>
@@ -50,5 +50,3 @@ const styles={
 };
 
 export default connect()(List);
-
-

@@ -9,7 +9,6 @@ function App(props) {
 
   const {lists} = props;
   const onDragEnd = (result) => {
-    console.log('result', result);
     const { destination, source, draggableId } = result;
     if(!destination){
       return;
@@ -65,7 +64,3 @@ const mapStateToProps= (state)=> {
 };
 
 export default connect(mapStateToProps)(App);
-
-
-
-

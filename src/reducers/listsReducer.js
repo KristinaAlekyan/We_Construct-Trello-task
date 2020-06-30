@@ -1,5 +1,5 @@
 import {CONSTANTS} from '../actions/index';
-import { cloneDeep } from 'lodash'
+import { cloneDeep, findIndex } from 'lodash'
 
 let listID = 0;
 let cardID = 0;
@@ -25,34 +25,27 @@ const listsReducer = (state = initialState, action) =>{
             cardID +=1;
 
             const newState = state.map(list =>{
-            if(list.id === action.payload.listID){
-                return{
-                    ...list,
-                    cards: [...list.cards, newCard]
-                };
-            } else{
-                return list;
-            }
-        });
-        return newState;
-        }
-
-        case CONSTANTS.EDIT_LIST_TITLE: {
-            const { listID, newTitle } = action.payload;
-
-            const list = state[listID];
-            list.title = newTitle;
-            return { ...state, [listID]: list };
-        }
-
-        case CONSTANTS.DELETE_LIST: {
-            const { listID } = action.payload;
-            const newState = state;
-            delete newState[listID];
+                if(list.id === action.payload.listID){
+                    return{
+                        ...list,
+                        cards: [...list.cards, newCard]
+                    };
+                } else{
+                    return list;
+                }
+            });
             return newState;
         }
 
-
+        case CONSTANTS.DELETE_CARD: {
+            const { id, listID } = action.payload
+            let newState = cloneDeep(state);
+            let list = newState.find(item => item.id === listID)
+            let cards = list.cards
+            const index = findIndex(cards, { id })
+            cards.splice(index, 1); 
+            return [ ...newState ];
+        }
 
         case CONSTANTS.DRAGG_HAPPENED:
             let {
@@ -74,7 +67,6 @@ const listsReducer = (state = initialState, action) =>{
                         list = item
                     }
                 });
-                console.log('list', list);
                 const card = list.cards.splice(droppableIndexStart, 1);
                 list.cards.splice(droppableIndexEnd, 0, ...card);
                 return [ ...newState ];
@@ -102,6 +94,5 @@ const listsReducer = (state = initialState, action) =>{
 };
 
 export default listsReducer;
-
 
 
