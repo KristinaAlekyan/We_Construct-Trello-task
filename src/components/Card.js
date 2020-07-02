@@ -22,8 +22,7 @@ const Card1 = ({ text, id, index, listID, dispatch })=>{
                 <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                     <Card style={styles.cardContainer}>
                         <CardContent>
-                            <Typography gutterBottom>{text}</Typography>
-                            
+                            <Typography gutterBottom>{text}</Typography>                            
                         </CardContent>
                         <DeleteOutlineIcon onClick={() => handleDeleteCard(id)}></DeleteOutlineIcon>
                     </Card>
@@ -35,11 +34,13 @@ const Card1 = ({ text, id, index, listID, dispatch })=>{
 
 const styles={
     cardContainer: {
+        height: 30,
         marginBottom: 10,
         display:"flex",
         justifyContent: "space-between",
         alignItems: "center"
     },
+    
 };
 
 export default connect()(Card1);

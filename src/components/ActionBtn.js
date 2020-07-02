@@ -95,11 +95,10 @@ class ActionBtn extends React.Component{
                         border: "green",
                     }}/>
                 </Card>
-                <div style={{display: "flex", justifyContent: "start", }}>
+                <div style={styles.actionCo}>
                     <Button
-                        onMouseDown={list?this.handleAddList: this.handleAddCard}
-                        
-                        style={{color: "white", backgroundColor: "green", height:18, width: 80, marginTop: 4, display: "flex", justifyContent: "center"}}>
+                        onMouseDown={list?this.handleAddList: this.handleAddCard}                        
+                        style={styles.buttonStyle}>
                             {btnTitle} {" "}
                     </Button>
                     <Icon>close</Icon>
@@ -111,10 +110,29 @@ class ActionBtn extends React.Component{
 
     render (){
         return this.state.formOpen? this.renderForm(): this.renderAddBtn();
-    }
-
-   
+    }   
 }
+const styles={
+    actionCo:{
+        display: "flex",
+        justifyContent: "start",
+        borderRadius: 3,
+        height: "auto", 
+        minHeight: 32, 
+        padding: 4,
+        marginTop: 5,
+        marginLeft: 8
+    },
+    buttonStyle:{
+        color: "#fff",
+        backgroundColor: "#5aac44", 
+        height:18,
+        width: 80,
+        marginTop:4,
+        display: "flex", 
+        justifyContent: "center",
+    }    
+};
 
 
 export default connect()(ActionBtn);

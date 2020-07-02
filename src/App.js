@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import ActionBtn from './components/ActionBtn'
 import { DragDropContext } from 'react-beautiful-dnd';
 import {CONSTANTS, sorter} from './actions';
+import './App.css';
 
 function App(props) {
 
@@ -28,10 +29,9 @@ function App(props) {
   };
 
   return (
-    <div style= {{backgroundColor: "lightblue", height: "100vh"}}>
       <DragDropContext  onDragEnd={onDragEnd}>
       <div >
-        <h1>Trello Task</h1>
+        <h1 style={styles.titleStyle}>Trello Task</h1>
         <div style = {styles.listsCont}>
           {lists.map(list =>
             <List listID={list.id} key={list.id} title={list.title} cards={list.cards}/>
@@ -41,8 +41,7 @@ function App(props) {
           </div>
         </div>
       </div>
-      </DragDropContext>
-    </div>
+      </DragDropContext>    
   )
 }
 const styles = {
@@ -50,9 +49,16 @@ const styles = {
     display: "flex",
     flexDirection: "row",
   },
-  actionBtnCon: {
-    height: 30,
-    width: 100,
+  
+  actionBtnCon:{            
+    width: 272,
+    marginTop: 0,
+    marginLeft: 4,
+    height: "100%",
+    display: "inline-block",
+},
+  titleStyle:{
+    color: "white",
   }
 };
 
