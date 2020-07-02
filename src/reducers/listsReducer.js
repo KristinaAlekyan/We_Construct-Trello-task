@@ -46,7 +46,13 @@ const listsReducer = (state = initialState, action) =>{
             cards.splice(index, 1); 
             return [ ...newState ];
         }
-
+        case CONSTANTS.DELETE_LIST: {
+            const { id } = action.payload;
+            let newState = cloneDeep(state);
+            const index = findIndex(newState, { id })
+            newState.splice(index, 1); 
+            return newState;
+        }
         case CONSTANTS.DRAGG_HAPPENED:
             let {
                 draggableId,

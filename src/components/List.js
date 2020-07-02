@@ -3,8 +3,17 @@ import Card1 from './Card';
 import ActionBtn from './ActionBtn';
 import { Droppable} from 'react-beautiful-dnd';
 import {connect} from 'react-redux';
+import {CONSTANTS} from '../actions';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 
 const List = ({ title, cards, listID, index, dispatch }) =>{
+    const handleDeleteList = (id) => {
+        dispatch({
+              type: CONSTANTS.DELETE_LIST,
+              payload: { id }
+        });
+    }
+
     return(
         <Droppable droppableId={String(listID)}>
             {(provided) => (
@@ -13,9 +22,7 @@ const List = ({ title, cards, listID, index, dispatch }) =>{
                         <div>
                             <h3 > {title}</h3>
                         </div>
-                        <div>
-                            <span className="material-icons">more_horiz</span>
-                        </div>
+                        <DeleteOutlineIcon onClick={() => handleDeleteList(listID)}></DeleteOutlineIcon>
                     </div>
                     {cards.map((c, index)=>(
                         <Card1  key={c.id} index={index} text={c.text} id={c.id} listID={listID} />
