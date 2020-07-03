@@ -1,5 +1,6 @@
 import {CONSTANTS} from '../actions/index';
 import { cloneDeep, findIndex } from 'lodash'
+import { act } from 'react-dom/test-utils';
 
 let listID = 0;
 let cardID = 0;
@@ -94,6 +95,14 @@ const listsReducer = (state = initialState, action) =>{
                 return [...newState];
             }
             return state;
+
+        case CONSTANTS.EDIT_LIST_TITLE: {
+            const {listID, newTitle} = action.payload;
+            let newState = cloneDeep(state);
+            newState[listID].title=newTitle;
+            return [...newState]
+            
+        }
         default:
             return state;
     }

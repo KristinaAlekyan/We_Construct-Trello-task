@@ -1,45 +1,80 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Card1 from './Card';
 import ActionBtn from './ActionBtn';
 import { Droppable} from 'react-beautiful-dnd';
 import {connect} from 'react-redux';
-import {CONSTANTS} from '../actions';
+import {CONSTANTS, editListTitle} from '../actions';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 
 const List = ({ title, cards, listID, index, dispatch }) =>{
+    const [isEditing, setIsEditing] = useState(false);
+    const [listTitle, setListTitle] = useState(title);
+
     const handleDeleteList = (id) => {
         dispatch({
               type: CONSTANTS.DELETE_LIST,
               payload: { id }
         });
+    };
+
+    const renderEditInput = () => {
+        return (
+            <form 
+            onSubmit={handleFinishEditing}>
+                <input  style={styles.inputStyle}         
+                    type="text"
+                    value={listTitle}
+                    onBlur = {handleFinishEditing}
+                    onChange={handleChange}
+                    />
+            </form>
+        );
+    };
+    const handleFinishEditing = e =>{
+        setIsEditing(false);
+        dispatch(editListTitle(listID, listTitle))
     }
+    const handleChange = e => {
+        e.preventDefault();
+        setListTitle(e.target.value);
+    }
+
+
     return(
         <div style={styles.listWrapper} >
             <div style={styles.listContent}> 
                 <Droppable droppableId={String(listID)}>
                     {(provided) => (
-                        <div {...provided.droppableProps} ref={provided.innerRef} >
-                            <div style={styles.listHeader}>
-                                <div>
-                                    <h3 > {title}</h3>
-                                </div>
-                                <DeleteOutlineIcon onClick={() => handleDeleteList(listID)}></DeleteOutlineIcon>
-                            </div>
-                            <div style={styles.cardContainer}>
-                                {cards.map((c, index)=>(
-                                    <div style={styles.cardContent}>
-                                        <Card1  key={c.id} index={index} text={c.text} id={c.id} listID={listID}  />
+                        <div>                            
+                            <div>
+                                { isEditing?(
+                                    renderEditInput()
+                                ):(
+                                    <div style={styles.listHeader} onClick = {() => setIsEditing(true)}>
+                                    <div>
+                                        <h3 > {title}</h3>
                                     </div>
-                                ))
-                                }
+                                    <DeleteOutlineIcon onClick={() => handleDeleteList(listID)}></DeleteOutlineIcon>
+                                </div>
+                                )}
                             </div>
-                            
-                            <div style={styles.actionBtnWrapper}>
-                                <div style={styles.actionBtnCont}>
-                                    <ActionBtn listID={listID} />
-                                </div>                                
+                            <div {...provided.droppableProps} ref={provided.innerRef} >                            
+                                <div style={styles.cardContainer}>
+                                    {cards.map((c, index)=>(
+                                        <div style={styles.cardContent}>
+                                            <Card1  key={c.id} index={index} text={c.text} id={c.id} listID={listID}  />
+                                        </div>
+                                    ))
+                                    }
+                                </div>
+                                
+                                <div style={styles.actionBtnWrapper}>
+                                    <div style={styles.actionBtnCont}>
+                                        <ActionBtn listID={listID} />
+                                    </div>                                
+                                </div>
+                                {provided.placeholder}
                             </div>
-                            {provided.placeholder}
                         </div>
                     )}
                 </Droppable>
@@ -104,6 +139,13 @@ const styles={
         minHeight: 32,
         padding: 4,    
         borderadius:4, 
+    },
+    inputStyle:{
+        border: "none",
+        outlineColor: "blue",
+        borderRadius: 4,
+        margin: 10,
+        padding: 4,
     }
 
 }

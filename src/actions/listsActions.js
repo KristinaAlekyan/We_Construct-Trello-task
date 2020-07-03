@@ -7,3 +7,13 @@ export const addList = title =>{
         payload: title  
     };
 };
+
+export const editListTitle = (listID, newTitle) =>{
+    return {
+        type: CONSTANTS.EDIT_LIST_TITLE,
+        payload: {
+            listID,
+            newTitle,
+        }
+    };
+};
